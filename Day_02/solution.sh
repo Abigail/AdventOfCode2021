@@ -6,10 +6,10 @@ input=${1:-input}
 
 while read cmd amount
 do  case $cmd in
-        forward) ((forward += amount))
-                 ((depth2  += amount * depth1)) ;;
-        down)    ((depth1  += amount))          ;;
-        up)      ((depth1  -= amount))          ;;
+        f*) ((forward += amount))
+            ((depth2  += amount * depth1)) ;;
+        d*) ((depth1  += amount))          ;;
+        u*) ((depth1  -= amount))          ;;
     esac
 done < $input
 
