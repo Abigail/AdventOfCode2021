@@ -40,12 +40,12 @@ class BingoCard:
 
 
 input = open ("input", mode = 'r') . read () . split ("\n\n")
-balls = input [0]
+balls = map (lambda b: int (b), input [0] . split (","))
 cards = map (lambda sheet: BingoCard (sheet), input [1:])
 
 first_score = -1
 last_score  = -1
-for ball in map (lambda b: int (b), balls . split (",")):
+for ball in balls:
     for card in cards:
         card . play (ball)
         if card . bingo:
