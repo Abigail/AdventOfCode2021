@@ -65,15 +65,15 @@ my @numbers = <> =~ /[0-9]+/g;
 
 my @cards = map {BingoCard:: -> new -> init ($_)} <>;
 
-my $first_win = 0;
-my $last_win  = 0;
+my $first_win;
+my $last_win;
 
 foreach my $number (@numbers) {
     foreach my $i (keys @cards) {
         my $card = $cards [$i];
         next if $card -> finished;
         if ($card -> play ($number) -> bingo) {
-            $first_win ||= $number * $card -> left;
+            $first_win //= $number * $card -> left;
             $last_win    = $number * $card -> left;
             $card -> set_finished;
         }
