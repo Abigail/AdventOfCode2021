@@ -52,7 +52,7 @@ for ball in balls:
             if first_score < 0:
                 first_score = ball * card . total
             last_score = ball * card . total
-    cards = filter (lambda card: card . bingo == 0, cards)
+    cards = filter (lambda card: not card . bingo, cards)
 
 print ("Solution 1: %d" %(first_score))
 print ("Solution 2: %d" %(last_score))
