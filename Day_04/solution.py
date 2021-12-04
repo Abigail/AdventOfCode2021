@@ -25,17 +25,17 @@ class BingoCard:
         self . numbers = num_dict
         self . rows    = row_list
         self . cols    = col_list
-        self . bingo   = 0
+        self . bingo   = False
         self . total   = sum  
 
     def play (self, number):
-        if self . bingo == 0:
+        if not self . bingo:
             if number in self . numbers:
                 [rc, cc] = self . numbers [number]
                 self . rows [rc] = self . rows [rc] - 1
                 self . cols [cc] = self . cols [cc] - 1
                 if self . rows [rc] == 0 or self . cols [cc] == 0:
-                    self . bingo = 1
+                    self . bingo = True
                 self . total = self . total - number
 
 
