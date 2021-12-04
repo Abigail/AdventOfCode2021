@@ -17,7 +17,7 @@ class BingoCard:
                 if rc == 0:
                     col_list . append (0)
                 num = int (num)
-                num_dict [num] = [rc, cc]
+                num_dict [num] = rc, cc
                 row_list [rc]  = row_list [rc] + 1
                 col_list [cc]  = col_list [cc] + 1
                 sum            = sum + num
