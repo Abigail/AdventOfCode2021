@@ -9,8 +9,6 @@ no  warnings 'syntax';
 use experimental 'signatures';
 use experimental 'lexical_subs';
 
-use List::Util qw [min max];
-
 @ARGV = "input" unless @ARGV;
 
 my %vents1;
@@ -19,26 +17,20 @@ while (<>) {
     my ($x1, $y1, $x2, $y2) = /[0-9]+/g;
 
     #
-    # Slope
+    # Slope and distance.
     #
-    my $dx = $x2 <=> $x1;
-    my $dy = $y2 <=> $y1;
+    my ($dx, $dy) = ($x2 <=> $x1, $y2 <=> $y1);
+    my $dist = abs ($x1 - $x2) || abs ($y1 - $y2);
 
     #
-    # Hit all the points on the line. This stops when we reach the
-    # end of the line segment...
+    # Mark all points of the line segment. For part one, we only
+    # do horizontal and vertical lines, which happens if one of
+    # $dx or $dy is 0.
     #
-    for (my ($x, $y) = ($x1, $y1);
-             $x != $x2 || $y != $y2;
-             $x += $dx, $y += $dy) {
-        $vents1 {$x, $y} ++ if $x1 == $x2 || $y1 == $y2;
-        $vents2 {$x, $y} ++
+    unless ($dx * $dy) {
+        $vents1 {$x1 + $_ * $dx, $y1 + $_ * $dy} ++ for 0 .. $dist;
     }
-    #
-    # ... so be sure to mark the endpoint.
-    #
-    $vents1 {$x2, $y2} ++ if $x1 == $x2 || $y1 == $y2;
-    $vents2 {$x2, $y2} ++
+    $vents2 {$x1 + $_ * $dx, $y1 + $_ * $dy} ++ for 0 .. $dist;
 }
 
 say "Solution 1: ", scalar grep {$_ > 1} values %vents1;
