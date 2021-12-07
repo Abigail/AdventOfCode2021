@@ -28,8 +28,10 @@ sub cost2 ($target, $nums) {
 my $median = median @nums;
 my $mean   =   mean @nums;
 
-say "Solution 1: ",     cost1        $median, \@nums;
-say "Solution 2: ", min cost2 (floor ($mean), \@nums),
-                        cost2 ( ceil ($mean), \@nums);
+say "Solution 1: ", min cost1 (floor ($median), \@nums),
+                        cost1 ( ceil ($median), \@nums);
+say "Solution 2: ", min cost2 (floor ($mean),   \@nums),
+                        cost2 ( ceil ($mean),   \@nums);
+
 
 __END__
