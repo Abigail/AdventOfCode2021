@@ -15,16 +15,16 @@ use List::Util qw [min max sum];
 
 my @nums = <> =~ /[0-9]+/g;
 
-sub diffsum1 ($target, $nums) {
+sub cost1 ($target, $nums) {
     sum map {abs ($target - $_)} @$nums;
 }
 
-sub diffsum2 ($target, $nums) {
+sub cost2 ($target, $nums) {
     sum map {my $n = abs ($target - $_); $n * ($n + 1) / 2} @$nums;
 }
 
-say "Solution 1: ", min map {diffsum1 $_, \@nums} min (@nums) .. max (@nums);
-say "Solution 2: ", min map {diffsum2 $_, \@nums} min (@nums) .. max (@nums);
+say "Solution 1: ", min map {cost1 $_, \@nums} min (@nums) .. max (@nums);
+say "Solution 2: ", min map {cost2 $_, \@nums} min (@nums) .. max (@nums);
 
 
 __END__
