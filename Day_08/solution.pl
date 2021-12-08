@@ -9,8 +9,7 @@ no  warnings 'syntax';
 use experimental 'signatures';
 use experimental 'lexical_subs';
 
-@ARGV = "t/input-1" unless @ARGV;
-@ARGV = "input";
+@ARGV = "input" unless @ARGV;
 
 sub shares ($f, $s) {
     grep {$s =~ /$_/} split // => $f;
