@@ -10,17 +10,14 @@ use experimental 'signatures';
 use experimental 'lexical_subs';
 
 @ARGV = "t/input-1" unless @ARGV;
-# @ARGV = "input";
+@ARGV = "input";
 
 sub shares ($f, $s) {
-    my $c = 0;
-    foreach my $char (split // => $f) {
-        $c ++ if $s =~ /$char/
-    }
-    $c;
+    grep {$s =~ /$_/} split // => $f;
 }
 
-my $count = 0;
+my $count1 = 0;
+my $count2 = 0;
 while (<>) {
     chomp;
     my ($input, $output) = split /\s*\|\s*/;
@@ -39,7 +36,6 @@ while (<>) {
         push @{$buckets [length $i]} => $i;
     }
 
-    my %display;
     my @digits;   # String representing a digit.
 
     #
@@ -50,33 +46,44 @@ while (<>) {
     $digits [7] = $buckets [3] [0];
     $digits [8] = $buckets [7] [0];
 
-    $display {$digits [$_]} = $_ for 1, 4, 7, 8;
-
     #
     # Distingish between 0, 6 and 9. They all have six segments.
     #     The 6 shares 1 line segment  with 1, while 0 and 9 share 2.
     #     The 0 shares 3 line segments with 4, while 9 shares 4.
     #
     foreach my $try (@{$buckets [6]}) {
-        if (shares ($try, $digits [1]) == 1) {
-            $digits [6] = $try;
-        }
-        elsif (shares ($try, $digits [4]) == 3) {
-            $digits [0] = $try;
-        }
-        else {
-            $digits [9] = $try;
-        }
+        $digits [shares ($try, $digits [1]) == 1 ? 6
+               : shares ($try, $digits [4]) == 3 ? 0
+               :                                   9] = $try;
     }
 
-    $count += grep {$display {$_} && (
-                        $display {$_} == 1 ||
-                        $display {$_} == 4 ||
-                        $display {$_} == 7 ||
-                        $display {$_} == 8)} @output;
+    #
+    # Distinguish between 2, 3, and 5. They all have 5 segments
+    #     The 3 shares 2 line segments with 1, while 3 and 5 share 1.
+    #     The 5 shares 5 line segments with 9, while 2 share 4.
+    #
+    foreach my $try (@{$buckets [5]}) {
+        $digits [shares ($try, $digits [1]) == 2 ? 3
+               : shares ($try, $digits [9]) == 5 ? 5
+               :                                   2] = $try;
+    }
+
+    #
+    # Create a lookup table 
+    #
+    my %display;
+    $display {$digits [$_]} = $_ for keys @digits;
+
+    $count1 += grep {$display {$_} == 1 ||
+                     $display {$_} == 4 ||
+                     $display {$_} == 7 ||
+                     $display {$_} == 8}      @output;
+
+    $count2 += join "" => map {$display {$_}} @output;
 
 }
 
-say "Solution 1: ", $count;
+say "Solution 1: ", $count1;
+say "Solution 2: ", $count2;
 
 __END__
