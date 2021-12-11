@@ -11,16 +11,16 @@ use experimental 'lexical_subs';
 
 @ARGV = "input" unless @ARGV;
 
-my $MIN    = -~0;
-my $CYCLES = 100;
-my $LIMIT  =   9;
+my $MIN   = -~0;
+my $STEPS = 100;
+my $LIMIT =   9;
 
 my @octopusses = map {[/[0-9]/g, $MIN]} <>;
 my $SIZE = @octopusses;
 push @octopusses => [($MIN) x ($SIZE + 1)];
 
-sub cycle ($octopusses) {
-    my %flashed;  # Prevent flashing twice during a cycle
+sub step ($octopusses) {
+    my %flashed;  # Prevent flashing twice during a step
     my @todo;
 
     #
@@ -57,21 +57,21 @@ sub cycle ($octopusses) {
 }
 
 
-my $first_cycle = 0;
+my $first_step = 0;
 my $flashes     = 0;
 {
-    state $cycles = 0;
-    $cycles ++;
-    my $cycle_flashes = cycle \@octopusses;
-    if ($cycle_flashes == $SIZE * $SIZE) {
-        $first_cycle = $cycles;
+    state $steps = 0;
+    $steps ++;
+    my $step_flashes = step \@octopusses;
+    if ($step_flashes == $SIZE * $SIZE) {
+        $first_step = $steps;
     }
-    $flashes += $cycle_flashes if $cycles <= $CYCLES;
-    redo unless $first_cycle && $cycles >= $CYCLES;
+    $flashes += $step_flashes if $steps <= $STEPS;
+    redo unless $first_step && $steps >= $STEPS;
 }
 
 
 say "Solution 1: ", $flashes;
-say "Solution 2: ", $first_cycle;
+say "Solution 2: ", $first_step;
 
 __END__
