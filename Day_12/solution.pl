@@ -29,7 +29,7 @@ my @todo = ([$START,        # Next cave to visit
 my $paths1 = 0;
 my $paths2 = 0;
 while (@todo) {
-    my ($next, $seen, $twice) = @{shift @todo};
+    my ($next, $seen, $twice) = @{pop @todo};
     #
     # If $next is the end cave, this path is done. Count it.
     #
