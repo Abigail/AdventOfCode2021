@@ -13,7 +13,6 @@ use List::Util qw [min max];
 
 @ARGV = "input" unless @ARGV;
 
-
 #
 # Given a set of rules, and a set of pairs with their counts,
 # calculate the pairs and their counts of the next generation.
