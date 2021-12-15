@@ -21,9 +21,7 @@ use List::Util qw [min max];
 sub next_gen ($rules, $pairs) {
     my %new;
     while (my ($pair, $count) = each %$pairs) {
-        foreach my $new_pairs (@{$$rules {$pair}}) {
-            $new {$new_pairs} += $count;
-        }
+        $new {$_} += $count foreach @{$$rules {$pair}};
     }
     \%new;
 }
