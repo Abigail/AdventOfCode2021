@@ -86,6 +86,7 @@ sub extract () {
 }
 sub add_to_heap ($element) {
     push @heap => $element;
+    $::max = @heap if $::max < @heap;
     rebalance_u;
 }
 
